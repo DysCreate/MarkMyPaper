@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    align-items: center;
+    min-height: 50px;
+    background-color: rgb(87, 77, 77);
+}
+
+.leftside {
+    justify-content: left;
+    
+}
+.leftside :hover{
+    background: #fff;
+
+}
+
+div {
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+
+}
