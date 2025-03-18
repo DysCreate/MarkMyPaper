@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark My Paper - AI-Powered Answer Sheet Grading</title>
+    <link rel="stylesheet" href="../static/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-check-circle"></i>
+                Mark My Paper
+            </div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="{{ url_for('login') }}" class="btn login">Login</a></li>
+                <li><a href="trial.html" class="btn trial">Start Free Trial</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Grade Answer Sheets in Seconds with AI</h1>
+                <p>Transform your grading process with our cutting-edge AI technology. Save hours of manual work and ensure consistent, unbiased evaluation.</p>
+                <div class="hero-buttons">
+                    <a href="#demo" class="btn primary">Watch Demo</a>
+                    <a href="#features" class="btn secondary">Explore Features</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">99.9%</span>
+                        <span class="stat-label">Accuracy</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">10x</span>
+                        <span class="stat-label">Faster Grading</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">5000+</span>
+                        <span class="stat-label">Happy Teachers</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="particles">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+                <div class="mockup-container">
+                    <div class="mockup-window">
+                        <div class="window-header">
+                            <div class="window-buttons">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="window-title">AI Grading Dashboard</div>
+                        </div>
+                        <div class="window-content">
+                            <div class="grading-preview">
+                                <div class="answer-sheet">
+                                    <div class="sheet-header">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span>Answer Sheet Analysis</span>
+                                    </div>
+                                    <div class="grade-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill"></div>
+                                        </div>
+                                        <span class="progress-text">Analyzing...</span>
+                                    </div>
+                                    <div class="grade-stats">
+                                        <div class="stat-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Correct: 42/50</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Time: 2.3s</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="results-preview">
+                                    <div class="result-item">
+                                        <div class="result-marker correct"></div>
+                                        <div class="result-text">Question 1</div>
+                                    </div>
+                                    <div class="result-item">
+                                        <div class="result-marker correct"></div>
+                                        <div class="result-text">Question 2</div>
+                                    </div>
+                                    <div class="result-item analyzing">
+                                        <div class="result-marker"></div>
+                                        <div class="result-text">Question 3</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-elements">
+                    <div class="floating-element grade">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Smart Grading</p>
+                    </div>
+                    <div class="floating-element accuracy">
+                        <i class="fas fa-bullseye"></i>
+                        <p>99.9% Accurate</p>
+                    </div>
+                    <div class="floating-element speed">
+                        <i class="fas fa-bolt"></i>
+                        <p>Lightning Fast</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="upload-navigation">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="nav-text">
+                    <h2>Ready to Grade?</h2>
+                    <p>Start grading your answer sheets now with our AI-powered system</p>
+                    <a href="upload.html" class="upload-btn">
+                        <span class="btn-content">
+                            <i class="fas fa-upload"></i>
+                            <span>Upload Answer Sheets</span>
+                        </span>
+                        <div class="btn-particles">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="nav-visual">
+                    <div class="visual-container">
+                        <div class="grading-preview">
+                            <div class="preview-header">
+                                <div class="preview-title">AI Grading System</div>
+                                <div class="preview-status active">Active</div>
+                            </div>
+                            <div class="preview-content">
+                                <div class="preview-item">
+                                    <div class="item-icon">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div class="item-info">
+                                        <div class="item-title">Answer Sheet</div>
+                                        <div class="item-status">Ready to Process</div>
+                                    </div>
+                                </div>
+                                <div class="preview-item">
+                                    <div class="item-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="item-info">
+                                        <div class="item-title">AI Analysis</div>
+                                        <div class="item-status">Processing</div>
+                                    </div>
+                                </div>
+                                <div class="preview-item">
+                                    <div class="item-icon">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                    <div class="item-info">
+                                        <div class="item-title">Results</div>
+                                        <div class="item-status">Generating</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <h2>Powerful Features</h2>
+        <div class="features-container">
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Lightning-Fast Grading</h3>
+                <p>Grade hundreds of answer sheets in minutes with our advanced AI technology.</p>
+                <ul class="feature-list">
+                    <li>Multiple-choice questions</li>
+                    <li>Written responses</li>
+                    <li>Mathematical equations</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Smart Analytics</h3>
+                <p>Get detailed insights into student performance and identify areas for improvement.</p>
+                <ul class="feature-list">
+                    <li>Performance tracking</li>
+                    <li>Progress reports</li>
+                    <li>Custom analytics</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Reliable & Secure</h3>
+                <p>Enterprise-grade security with 99.9% accuracy in grading.</p>
+                <ul class="feature-list">
+                    <li>Data encryption</li>
+                    <li>Error detection</li>
+                    <li>Backup systems</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Upload Answer Sheets</h3>
+                <p>Simply scan and upload answer sheets</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>AI Processing</h3>
+                <p>Our AI analyzes and grades each response</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Get Results</h3>
+                <p>Download detailed reports and analytics</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing">
+        <h2>Simple Pricing</h2>
+        <div class="pricing-container">
+            <div class="price-card starter">
+                <h3>Starter</h3>
+                <div class="price">$0</div>
+                <p class="duration">3-day trial</p>
+                <ul>
+                    <li><i class="fas fa-check"></i> 100 sheets/month</li>
+                    <li><i class="fas fa-check"></i> Basic analytics</li>
+                    <li><i class="fas fa-check"></i> Email support</li>
+                </ul>
+                <button class="btn">Start Trial</button>
+            </div>
+            <div class="price-card pro">
+                <div class="popular">Most Popular</div>
+                <h3>Pro</h3>
+                <div class="price">$5</div>
+                <p class="duration">per month</p>
+                <ul>
+                    <li><i class="fas fa-check"></i> 1000 sheets/month</li>
+                    <li><i class="fas fa-check"></i> Advanced analytics</li>
+                    <li><i class="fas fa-check"></i> Priority support</li>
+                    <li><i class="fas fa-check"></i> Custom reports</li>
+                </ul>
+                <button class="btn">Choose Pro</button>
+            </div>
+            <div class="price-card enterprise">
+                <h3>Enterprise</h3>
+                <div class="price">Custom</div>
+                <p class="duration">tailored solution</p>
+                <ul>
+                    <li><i class="fas fa-check"></i> Unlimited sheets</li>
+                    <li><i class="fas fa-check"></i> Custom integration</li>
+                    <li><i class="fas fa-check"></i> 24/7 support</li>
+                    <li><i class="fas fa-check"></i> API access</li>
+                </ul>
+                <button class="btn">Contact Sales</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Get Started Today</h2>
+        <div class="contact-container">
+            <form class="contact-form">
+                <div class="form-group">
+                    <input type="text" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <select required>
+                        <option value="">Select Package</option>
+                        <option value="starter">Starter</option>
+                        <option value="pro">Pro</option>
+                        <option value="enterprise">Enterprise</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Tell us about your needs" required></textarea>
+                </div>
+                <button type="submit" class="btn">Get Started</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Mark My Paper</h4>
+                <p>Revolutionizing answer sheet grading with AI technology.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>Email: info@markmypaper.ai</p>
+                <p>Phone: (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Mark My Paper. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        .upload-navigation {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-secondary) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .nav-text {
+            color: var(--light);
+        }
+
+        .nav-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-text p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .upload-btn {
+            display: inline-block;
+            position: relative;
+            padding: 1.2rem 2.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 50px;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-particles span {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 2s infinite;
+        }
+
+        .btn-particles span:nth-child(1) {
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .btn-particles span:nth-child(2) {
+            left: 50%;
+            animation-delay: 0.5s;
+        }
+
+        .btn-particles span:nth-child(3) {
+            left: 80%;
+            animation-delay: 1s;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .upload-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .upload-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-visual {
+            position: relative;
+        }
+
+        .visual-container {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.3s ease;
+        }
+
+        .visual-container:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .preview-title {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .preview-status {
+            padding: 0.5rem 1rem;
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--secondary);
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .preview-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .preview-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .preview-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .item-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-title {
+            color: var(--light);
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .item-status {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .nav-text h2 {
+                font-size: 2rem;
+            }
+
+            .visual-container {
+                transform: none;
+            }
+        }
+    </style>
+</body>
+</html>
