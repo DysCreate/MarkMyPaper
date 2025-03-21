@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Your Free Trial | Mark My Paper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --primary-light: #5EA2EF;
+            --secondary: #2ECC71;
+            --secondary-light: #45D884;
+            --accent: #9B59B6;
+            --dark: #2C3E50;
+            --dark-secondary: #34495E;
+            --light: #FFFFFF;
+            --success: #27AE60;
+            --warning: #F1C40F;
+            --danger: #E74C3C;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-secondary) 100%);
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        .trial-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .trial-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .trial-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .trial-header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .trial-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .trial-form {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .trial-features {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--light);
+        }
+
+        .feature-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        .feature-content p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .trial-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--light);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+        }
+
+        .trial-timer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 10px;
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .trial-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .trial-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .trial-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="trial-container">
+        <div class="trial-header">
+            <h1>Start Your Free Trial</h1>
+            <p>Experience the power of AI-powered answer sheet grading for 3 days. No credit card required.</p>
+        </div>
+
+        <div class="trial-grid">
+            <div class="trial-form">
+                <h2>Create Your Account</h2>
+                <form id="trialForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" required placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label>School/Organization</label>
+                        <input type="text" required placeholder="Enter your school or organization">
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Students</label>
+                        <select required>
+                            <option value="">Select range</option>
+                            <option value="1-100">1-100 students</option>
+                            <option value="101-500">101-500 students</option>
+                            <option value="501-1000">501-1000 students</option>
+                            <option value="1000+">1000+ students</option>
+                        </select>
+                    </div>
+                    <div class="trial-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i>
+                            Start Free Trial
+                        </button>
+                        <a href="home.html" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i>
+                            Back to Home
+                        </a>
+                    </div>
+                </form>
+                <div class="trial-timer">
+                    <i class="fas fa-clock"></i>
+                    Your trial will start immediately after registration
+                </div>
+            </div>
+
+            <div class="trial-features">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Lightning Fast Grading</h3>
+                        <p>Grade hundreds of answer sheets in minutes with our advanced AI technology</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Smart Analytics</h3>
+                        <p>Get detailed insights into student performance and identify areas for improvement</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Secure & Reliable</h3>
+                        <p>Enterprise-grade security with 99.9% accuracy in grading</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>24/7 Support</h3>
+                        <p>Get help whenever you need it with our dedicated support team</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('trialForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically handle the form submission
+            // For now, we'll just redirect to the upload page
+            window.location.href = 'upload.html';
+        });
+    </script>
+</body>
+</html>

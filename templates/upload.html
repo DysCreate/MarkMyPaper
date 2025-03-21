@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Answer Sheets | Mark My Paper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --primary-light: #5EA2EF;
+            --secondary: #2ECC71;
+            --secondary-light: #45D884;
+            --accent: #9B59B6;
+            --dark: #2C3E50;
+            --dark-secondary: #34495E;
+            --light: #FFFFFF;
+            --success: #27AE60;
+            --warning: #F1C40F;
+            --danger: #E74C3C;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Poppins', sans-serif;
+        }
+
+        @keyframes cyberpulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(0, 255, 209, 0.3),
+                           0 0 40px rgba(77, 77, 255, 0.2);
+                border-color: rgba(0, 255, 209, 0.5);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(0, 255, 209, 0.5),
+                           0 0 60px rgba(77, 77, 255, 0.3);
+                border-color: rgba(77, 77, 255, 0.5);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.15; }
+            50% { transform: scale(1.2); opacity: 0.2; }
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+                background-size: 400% 400%;
+            }
+            50% {
+                background-position: 100% 50%;
+                background-size: 200% 200%;
+            }
+            100% {
+                background-position: 0% 50%;
+                background-size: 400% 400%;
+            }
+        }
+
+        @keyframes shine {
+            0% { background-position: -100% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        @keyframes borderFlow {
+            0% { border-image-source: linear-gradient(45deg, var(--primary), var(--secondary)); }
+            50% { border-image-source: linear-gradient(45deg, var(--secondary), var(--accent)); }
+            100% { border-image-source: linear-gradient(45deg, var(--accent), var(--primary)); }
+        }
+
+        @keyframes neonPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 51, 102, 0.3), 0 0 40px rgba(79, 172, 254, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(255, 51, 102, 0.5), 0 0 60px rgba(79, 172, 254, 0.3); }
+        }
+
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.3;
+            animation: float 3s infinite ease-in-out;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            position: relative;
+        }
+
+        .page-wrapper::before {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            background: var(--gradient-1);
+            filter: blur(120px);
+            opacity: 0.2;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .upload-container {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 3rem;
+            background: var(--dark-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .upload-container:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-home {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .back-home:hover {
+            opacity: 1;
+            transform: translateX(-5px);
+        }
+
+        .upload-content {
+            padding: 2rem;
+        }
+
+        .upload-header {
+            margin-bottom: 2rem;
+        }
+
+        .upload-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .upload-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+
+        .grading-options {
+            background: var(--glass-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .grading-options h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-light);
+        }
+
+        .grading-options h4 {
+            font-size: 1rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--secondary-light);
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .option-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .option-item label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .select-style {
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--light);
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .select-style:hover, .select-style:focus {
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.3);
+            outline: none;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-label:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked {
+            background: var(--primary);
+            border-color: var(--primary-light);
+        }
+
+        .checkbox-label input[type="checkbox"]:checked::before {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--dark);
+            font-size: 12px;
+        }
+
+        .upload-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--light);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--glass-bg);
+            border-color: var(--primary);
+        }
+
+        .drop-zone {
+            border: 2px dashed var(--glass-border);
+            border-radius: 15px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            background: var(--glass-bg);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--primary);
+            background: rgba(74, 144, 226, 0.1);
+        }
+
+        .drop-zone i {
+            font-size: 3rem;
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+        }
+
+        .drop-zone h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .drop-zone p {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1rem;
+        }
+
+        .file-types {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .upload-list {
+            margin-top: 2rem;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem;
+            background: var(--glass-bg);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .file-item:hover {
+            background: rgba(0, 0, 0, 0.2);
+            border-color: var(--primary);
+        }
+
+        .file-item i {
+            color: var(--secondary-light);
+            font-size: 1.5rem;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .file-size {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--light);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .upload-preview {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .preview-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .preview-card:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 0, 0, 0.2);
+            border-color: var(--primary);
+        }
+
+        .preview-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .preview-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .upload-progress {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: shine 2s infinite;
+        }
+
+        @media (max-width: 1024px) {
+            .upload-container {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+
+            .upload-preview {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-wrapper {
+                padding: 1rem;
+            }
+
+            .upload-container {
+                padding: 2rem;
+            }
+
+            .upload-content {
+                padding: 1rem;
+            }
+
+            .drop-zone {
+                padding: 2rem 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .option-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .upload-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Remove particle effects and complex animations */
+        .particles-container {
+            display: none;
+        }
+
+        /* Simplify transitions */
+        .upload-container, .preview-card, .btn, .drop-zone, .file-item {
+            transition: all 0.3s ease;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--dark-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px;
+            margin: auto;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--primary);
+        }
+
+        .answer-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .answer-group {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .answer-group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .answer-group-title {
+            color: var(--primary-light);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .answer-input {
+            width: 100%;
+            min-height: 100px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--light);
+            font-size: 1rem;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .answer-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        .add-question {
+            background: var(--primary);
+            color: var(--light);
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .add-question:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .remove-question {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .remove-question:hover {
+            color: #ff6b6b;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Enhanced existing styles */
+        .drop-zone {
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px dashed var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone:hover {
+            background: rgba(74, 144, 226, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .preview-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .preview-card:hover {
+            transform: translateY(-5px);
+            background: rgba(74, 144, 226, 0.1);
+        }
+
+        .btn-upload-key {
+            background: var(--accent);
+            color: var(--light);
+            border: none;
+        }
+
+        .btn-upload-key:hover {
+            background: #a66abe;
+            transform: translateY(-2px);
+        }
+
+        .answer-key-upload-container {
+            padding: 2rem 0;
+        }
+
+        .answer-key-dropzone {
+            border: 2px dashed var(--accent);
+            border-radius: 15px;
+            padding: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(155, 89, 182, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .answer-key-dropzone:hover {
+            background: rgba(155, 89, 182, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .answer-key-dropzone i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .answer-key-dropzone h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .uploaded-key-info {
+            margin-top: 1.5rem;
+        }
+
+        .key-file-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(155, 89, 182, 0.1);
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .key-file-item i {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        .key-file-info {
+            flex: 1;
+        }
+
+        .key-file-name {
+            font-weight: 500;
+            color: var(--light);
+        }
+
+        .key-file-size {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .remove-key {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-key:hover {
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles-container" id="particles"></div>
+    <div class="page-wrapper">
+        <div class="upload-container">
+            <a href="dashboard.html" class="back-home">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+
+            <div class="upload-content">
+                <div class="upload-header">
+                    <h2>Upload Answer Sheets</h2>
+                    <p>Drop your answer sheets here for AI-powered grading</p>
+                </div>
+
+                <div class="grading-options">
+                    <h3>Grading Options</h3>
+                    <div class="option-grid">
+                        <div class="option-item">
+                            <label>Subject</label>
+                            <select id="subject" class="select-style">
+                                <option value="">Select Subject</option>
+                                <option value="english">English</option>
+                                <option value="social">Social Studies</option>
+                            </select>
+                        </div>
+                        <div class="option-item">
+                            <label>Grade Level</label>
+                            <select id="gradeLevel" class="select-style">
+                                <option value="">Select Grade</option>
+                                <option value="9">Grade 9</option>
+                                <option value="10">Grade 10</option>
+                                <option value="11">Grade 11</option>
+                                <option value="12">Grade 12</option>
+                            </select>
+                        </div>
+                        <div class="option-item">
+                            <label>Answer Key Format</label>
+                            <select id="keyFormat" class="select-style">
+                                <option value="">Select Format</option>
+                                <option value="text">Text Answers</option>
+                                <option value="mcq">Multiple Choice</option>
+                                <option value="mixed">Mixed Format</option>
+                            </select>
+                        </div>
+                        <div class="option-item">
+                            <label>Grading Scheme</label>
+                            <select id="gradingScheme" class="select-style">
+                                <option value="">Select Scheme</option>
+                                <option value="standard">Standard (0-100)</option>
+                                <option value="letter">Letter Grade (A-F)</option>
+                                <option value="percentage">Percentage</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="advanced-options">
+                        <h4>Advanced Settings</h4>
+                        <div class="option-grid">
+                            <div class="option-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="partialCredit">
+                                    <span>Allow Partial Credit</span>
+                                </label>
+                            </div>
+                            <div class="option-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="autoDetectHandwriting">
+                                    <span>Auto-detect Handwriting</span>
+                                </label>
+                            </div>
+                            <div class="option-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="generateFeedback">
+                                    <span>Generate Detailed Feedback</span>
+                                </label>
+                            </div>
+                            <div class="option-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="batchProcess">
+                                    <span>Batch Processing</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drop-zone" id="dropZone">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Drag & Drop Files</h3>
+                    <p>or click to browse from your computer</p>
+                    <span class="file-types">Supported formats: PDF, JPG, PNG</span>
+                    <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png" hidden>
+                </div>
+
+                <div class="upload-list" id="uploadList">
+                    <!-- File items will be added here dynamically -->
+                </div>
+
+                <div class="upload-actions">
+                    <button class="btn btn-secondary" id="previewAnswerKey">
+                        <i class="fas fa-key"></i>
+                        <span>Enter Answer Key</span>
+                    </button>
+                    <button class="btn btn-secondary btn-upload-key" id="uploadAnswerKey">
+                        <i class="fas fa-file-upload"></i>
+                        <span>Upload Answer Key</span>
+                    </button>
+                    <button class="btn btn-primary" id="startUpload" disabled>
+                        <i class="fas fa-upload"></i>
+                        <span>Start Grading</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="upload-preview">
+                <div class="preview-card">
+                    <i class="fas fa-magic"></i>
+                    <h3>AI-Powered Grading</h3>
+                    <p>Our advanced AI system grades answer sheets with high accuracy</p>
+                </div>
+                <div class="preview-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Instant Results</h3>
+                    <p>Get detailed analysis and scores within seconds</p>
+                </div>
+                <div class="preview-card">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Smart Analytics</h3>
+                    <p>Comprehensive insights into student performance</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="answerKeyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Enter Answer Key</h3>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="answer-input-container" id="answerInputContainer">
+                <div class="answer-group">
+                    <div class="answer-group-header">
+                        <span class="answer-group-title">Question 1</span>
+                        <button class="remove-question" onclick="removeQuestion(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <textarea class="answer-input" placeholder="Enter the correct answer for this question..."></textarea>
+                </div>
+            </div>
+            <button class="add-question" onclick="addQuestion()">
+                <i class="fas fa-plus"></i>
+                Add Question
+            </button>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveAnswerKey()">Save Answer Key</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="answerKeyUploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload Answer Key</h3>
+                <button class="close-modal" id="closeUploadModal">&times;</button>
+            </div>
+            <div class="answer-key-upload-container">
+                <div class="answer-key-dropzone" id="answerKeyDropZone">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Drop Answer Key File</h3>
+                    <p>or click to browse</p>
+                    <span class="file-types">Supported formats: PDF, DOCX, TXT</span>
+                    <input type="file" id="answerKeyInput" accept=".pdf,.docx,.txt" hidden>
+                </div>
+                <div class="uploaded-key-info" id="uploadedKeyInfo"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeUploadModal()">Cancel</button>
+                <button class="btn btn-primary" id="confirmKeyUpload" disabled>Confirm Upload</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const uploadList = document.getElementById('uploadList');
+        const startUpload = document.getElementById('startUpload');
+        const files = new Set();
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        // Highlight drop zone when dragging over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        // Handle dropped files
+        dropZone.addEventListener('drop', handleDrop, false);
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFiles);
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight(e) {
+            dropZone.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const newFiles = dt.files;
+            handleFiles({ target: { files: newFiles } });
+        }
+
+        function handleFiles(e) {
+            const newFiles = [...e.target.files];
+            newFiles.forEach(file => {
+                if (!files.has(file)) {
+                    files.add(file);
+                    uploadList.appendChild(createFileItem(file));
+                }
+            });
+            updateUploadButton();
+        }
+
+        function createFileItem(file) {
+            const item = document.createElement('div');
+            item.className = 'file-item';
+            
+            const fileSize = (file.size / 1024 / 1024).toFixed(2);
+            
+            item.innerHTML = `
+                <i class="far fa-file-alt"></i>
+                <div class="file-info">
+                    <div class="file-name">${file.name}</div>
+                    <div class="file-size">${fileSize} MB</div>
+                    <div class="upload-progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                </div>
+                <div class="file-actions">
+                    <button class="btn btn-outline" onclick="removeFile(this)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            return item;
+        }
+
+        function removeFile(button) {
+            const fileItem = button.closest('.file-item');
+            const fileName = fileItem.querySelector('.file-name').textContent;
+            files.forEach(file => {
+                if (file.name === fileName) {
+                    files.delete(file);
+                }
+            });
+            fileItem.remove();
+            updateUploadButton();
+        }
+
+        function updateUploadButton() {
+            validateForm();
+        }
+
+        function validateForm() {
+            const allSelected = ['subject', 'gradeLevel', 'keyFormat', 'gradingScheme'].every(selectId => 
+                document.getElementById(selectId).value !== ''
+            );
+            
+            const hasFiles = files.size > 0;
+            const hasAnswerKey = answerInputContainer.querySelectorAll('.answer-input').length > 0;
+            
+            startUpload.disabled = !allSelected || !hasFiles || !hasAnswerKey;
+        }
+
+        startUpload.addEventListener('click', () => {
+            // Simulate upload progress for each file
+            document.querySelectorAll('.file-item').forEach((item, index) => {
+                const progressBar = item.querySelector('.progress-bar');
+                simulateProgress(progressBar, index);
+            });
+        });
+
+        function simulateProgress(progressBar, delay) {
+            let progress = 0;
+            setTimeout(() => {
+                const interval = setInterval(() => {
+                    progress += (Math.random() * 15 + 5);
+                    if (progress > 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        progressBar.parentElement.parentElement.style.borderColor = 'var(--success)';
+                    }
+                    progressBar.style.width = ${progress}%;
+                }, 200);
+            }, delay * 500);
+        }
+
+        // Add particle effect
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                
+                // Random size
+                const size = Math.random() * 3 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random animation delay
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Initialize particles
+        createParticles();
+
+        // Add hover effect to preview cards
+        document.querySelectorAll('.preview-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add tooltip functionality for advanced options
+        document.querySelectorAll('.checkbox-label').forEach(label => {
+            label.setAttribute('title', getTooltipText(label.querySelector('input').id));
+        });
+
+        function getTooltipText(id) {
+            const tooltips = {
+                partialCredit: 'Allow partial marks for partially correct answers',
+                autoDetectHandwriting: 'Use AI to automatically detect and process handwritten answers',
+                generateFeedback: 'Provide detailed feedback and suggestions for improvement',
+                batchProcess: 'Process multiple answer sheets simultaneously'
+            };
+            return tooltips[id] || '';
+        }
+
+        // Modal functionality
+        const modal = document.getElementById('answerKeyModal');
+        const previewAnswerKey = document.getElementById('previewAnswerKey');
+        const closeModalBtn = document.getElementById('closeModal');
+        const answerInputContainer = document.getElementById('answerInputContainer');
+
+        previewAnswerKey.addEventListener('click', () => {
+            modal.classList.add('active');
+        });
+
+        closeModalBtn.addEventListener('click', closeModal);
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        function addQuestion() {
+            const questionCount = answerInputContainer.children.length + 1;
+            const answerGroup = document.createElement('div');
+            answerGroup.className = 'answer-group';
+            answerGroup.innerHTML = `
+                <div class="answer-group-header">
+                    <span class="answer-group-title">Question ${questionCount}</span>
+                    <button class="remove-question" onclick="removeQuestion(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <textarea class="answer-input" placeholder="Enter the correct answer for this question..."></textarea>
+            `;
+            answerInputContainer.appendChild(answerGroup);
+        }
+
+        function removeQuestion(button) {
+            if (answerInputContainer.children.length > 1) {
+                button.closest('.answer-group').remove();
+                updateQuestionNumbers();
+            }
+        }
+
+        function updateQuestionNumbers() {
+            const questions = answerInputContainer.querySelectorAll('.answer-group-title');
+            questions.forEach((title, index) => {
+                title.textContent = Question ${index + 1};
+            });
+        }
+
+        function saveAnswerKey() {
+            const answers = Array.from(answerInputContainer.querySelectorAll('.answer-input'))
+                .map(input => input.value.trim())
+                .filter(answer => answer !== '');
+            
+            if (answers.length === 0) {
+                alert('Please enter at least one answer');
+                return;
+            }
+
+            // Here you would typically save the answers
+            console.log('Answer key saved:', answers);
+            closeModal();
+            // Enable the start grading button if all other conditions are met
+            validateForm();
+        }
+
+        // Get all necessary elements
+        const uploadAnswerKeyBtn = document.getElementById('uploadAnswerKey');
+        const answerKeyUploadModal = document.getElementById('answerKeyUploadModal');
+        const closeUploadModalBtn = document.getElementById('closeUploadModal');
+        const answerKeyDropZone = document.getElementById('answerKeyDropZone');
+        const answerKeyInput = document.getElementById('answerKeyInput');
+        const uploadedKeyInfo = document.getElementById('uploadedKeyInfo');
+        const confirmKeyUpload = document.getElementById('confirmKeyUpload');
+        let answerKeyFile = null;
+
+        // Open modal when clicking upload button
+        uploadAnswerKeyBtn.addEventListener('click', () => {
+            answerKeyUploadModal.style.display = 'flex';
+            setTimeout(() => {
+            answerKeyUploadModal.classList.add('active');
+            }, 10);
+        });
+
+        // Close modal function
+        function closeUploadModal() {
+            answerKeyUploadModal.classList.remove('active');
+            setTimeout(() => {
+                answerKeyUploadModal.style.display = 'none';
+            }, 300);
+        }
+
+        // Close modal when clicking close button
+        closeUploadModalBtn.addEventListener('click', closeUploadModal);
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === answerKeyUploadModal) {
+                closeUploadModal();
+            }
+        });
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            answerKeyDropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
+        });
+
+        // Highlight drop zone when dragging over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            answerKeyDropZone.addEventListener(eventName, () => {
+                answerKeyDropZone.style.borderColor = 'var(--primary)';
+                answerKeyDropZone.style.background = 'rgba(155, 89, 182, 0.2)';
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            answerKeyDropZone.addEventListener(eventName, () => {
+                answerKeyDropZone.style.borderColor = 'var(--accent)';
+                answerKeyDropZone.style.background = 'rgba(155, 89, 182, 0.1)';
+            });
+        });
+
+        // Handle file drop
+        answerKeyDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const file = e.dataTransfer.files[0];
+            handleAnswerKeyFile(file);
+        });
+
+        // Handle file selection via click
+        answerKeyDropZone.addEventListener('click', () => {
+            answerKeyInput.click();
+        });
+
+        answerKeyInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            handleAnswerKeyFile(file);
+        });
+
+        function handleAnswerKeyFile(file) {
+            if (!file) return;
+
+            const validTypes = ['pdf', 'docx', 'txt'];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+
+            if (!validTypes.includes(fileExtension)) {
+                alert('Please upload a PDF, DOCX, or TXT file');
+                return;
+            }
+
+            answerKeyFile = file;
+            displayAnswerKeyFile(file);
+            confirmKeyUpload.disabled = false;
+        }
+
+        function displayAnswerKeyFile(file) {
+            const fileSize = (file.size / 1024 / 1024).toFixed(2);
+            uploadedKeyInfo.innerHTML = `
+                <div class="key-file-item">
+                    <i class="fas fa-file-alt"></i>
+                    <div class="key-file-info">
+                        <div class="key-file-name">${file.name}</div>
+                        <div class="key-file-size">${fileSize} MB</div>
+                    </div>
+                    <button class="remove-key" onclick="removeAnswerKey()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        function removeAnswerKey() {
+            answerKeyFile = null;
+            uploadedKeyInfo.innerHTML = '';
+            confirmKeyUpload.disabled = true;
+            answerKeyInput.value = '';
+        }
+
+        // Handle confirm upload button
+        confirmKeyUpload.addEventListener('click', () => {
+            if (answerKeyFile) {
+                // Here you would typically handle the file upload to your server
+                console.log('Uploading answer key:', answerKeyFile);
+                
+                // Show success message
+                alert('Answer key uploaded successfully!');
+                
+                // Close modal and reset
+                closeUploadModal();
+                removeAnswerKey();
+                
+                // Enable the start grading button if all other conditions are met
+                validateForm();
+            }
+        });
+    </script>
+</body>
+</html>

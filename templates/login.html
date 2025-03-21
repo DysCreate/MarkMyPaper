@@ -3,9 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login & Register | Mark My Paper</title>
+    <link rel="stylesheet" href="../static/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    
+    <div class="page-wrapper">
+        <div class="login-container">
+            <a href="home.html" class="back-home">
+                <i class="fas fa-arrow-left"></i>
+                Back to Home
+            </a>
+            
+            <div class="form-container">
+                <div class="form-box" id="login-form">
+                    <div class="logo">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Mark My Paper</span>
+                    </div>
+                    <h2>Welcome Back!</h2>
+                    <p class="subtitle">Your grading companion awaits</p>
+
+                    <form>
+                        <div class="input-group">
+                            <div class="input-field">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" placeholder="Email address" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-field">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" placeholder="Password" required>
+                                <button type="button" class="toggle-password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-options">
+                            <label class="remember-me">
+                                <input type="checkbox">
+                                <span>Remember me</span>
+                            </label>
+                            <a href="#" class="forgot-password">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" class="btn login-btn">
+                            <span>Login</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+
+                        <div class="divider">
+                            <span>or continue with</span>
+                        </div>
+
+                        <div class="social-login">
+                            <button class="social-btn google">
+                                <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill="#ffffff" d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81z"/>
+                                </svg>
+                                <span>Google</span>
+                            </button>
+                            <button class="social-btn github">
+                                <i class="fab fa-github"></i>
+                                <span>GitHub</span>
+                            </button>
+                        </div>
+
+                        <p class="switch-form">
+                            Don't have an account? 
+                            <a href="#" onclick="toggleForm()">Register here</a>
+                        </p>
+                    </form>
+                </div>
+
+                <div class="form-box" id="register-form" style="display: none;">
+                    <div class="logo">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Mark My Paper</span>
+                    </div>
+                    <h2>Create Account</h2>
+                    <p class="subtitle">Join our grading revolution</p>
+
+                    <form>
+                        <div class="input-group">
+                            <div class="input-field">
+                                <i class="fas fa-user"></i>
+                                <input type="text" placeholder="Full name" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-field">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" placeholder="Email address" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-field">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" placeholder="Password" required>
+                                <button type="button" class="toggle-password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn register-btn">
+                            <span>Create Account</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+
+                        <div class="divider">
+                            <span>or register with</span>
+                        </div>
+
+                        <div class="social-login">
+                            <button class="social-btn google">
+                                <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill="#ffffff" d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81z"/>
+                                </svg>
+                                <span>Google</span>
+                            </button>
+                            <button class="social-btn github">
+                                <i class="fab fa-github"></i>
+                                <span>GitHub</span>
+                            </button>
+                        </div>
+
+                        <p class="switch-form">
+                            Already have an account? 
+                            <a href="#" onclick="toggleForm()">Login here</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <div class="features-preview">
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Grade in Seconds</h3>
+                    <p>AI-powered grading that saves hours of your time</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Smart Analytics</h3>
+                    <p>Get detailed insights into student performance</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure & Reliable</h3>
+                    <p>Enterprise-grade security for your data</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            const loginForm = document.getElementById("login-form");
+            const registerForm = document.getElementById("register-form");
+            
+            loginForm.style.display = loginForm.style.display === "none" ? "block" : "none";
+            registerForm.style.display = registerForm.style.display === "none" ? "block" : "none";
+
+            // Add fade effect
+            if (loginForm.style.display === "block") {
+                loginForm.style.opacity = 0;
+                setTimeout(() => loginForm.style.opacity = 1, 50);
+            } else {
+                registerForm.style.opacity = 0;
+                setTimeout(() => registerForm.style.opacity = 1, 50);
+            }
+        }
+
+        // Handle form submissions
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Here you would typically handle the authentication
+                // For now, we'll just redirect to dashboard
+                window.location.href = 'dashboard.html';
+            });
+        });
+
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('input');
+                const icon = this.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
