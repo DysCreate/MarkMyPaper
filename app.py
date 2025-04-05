@@ -2,6 +2,10 @@ from flask import Flask, request, jsonify, send_from_directory, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
+from transformers import VisionEncoderDecoderModel, TrOCRProcessor
+from transformers import BertTokenizer, BertForSequenceClassification
+from PIL import Image
+import io
 import jwt
 import datetime
 from functools import wraps
@@ -10,14 +14,14 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# Configuration
-app.config['SECRET_KEY'] = 'Thisisasecretkey'  # Change this to a secure secret key
+
+app.config['SECRET_KEY'] = 'Thisisasecretkey'  
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# User Model
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -25,7 +29,7 @@ class User(db.Model):
     password = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
-# Token decorator
+
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -45,7 +49,7 @@ def token_required(f):
 
     return decorated
 
-# Serve HTML files
+
 @app.route('/')
 def serve_index():
     return render_template('home.html')
@@ -138,24 +142,22 @@ def get_user(current_user):
 @app.route('/api/logout', methods=['POST'])
 @token_required
 def logout(current_user):
-    # In a real application, you might want to blacklist the token here
+
     return jsonify({'message': 'Logout successful'}), 200
 
-# Password reset functionality
+
 @app.route('/api/reset-password-request', methods=['POST'])
 def reset_password_request():
     data = request.get_json()
     user = User.query.filter_by(email=data['email']).first()
     
     if user:
-        # Generate password reset token
         reset_token = jwt.encode({
             'user_id': user.id,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
         }, app.config['SECRET_KEY'])
         
-        # In a real application, send this token via email
-        # For now, we'll just return it
+       
         return jsonify({
             'message': 'Password reset instructions sent',
             'reset_token': reset_token
@@ -179,6 +181,69 @@ def reset_password():
         return jsonify({'message': 'Invalid or expired reset token', 'error': str(e)}), 401
 
     return jsonify({'message': 'Password reset failed'}), 400
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    processor = TrOCRProcessor.from_pretrained("microsoft/trocr-large-handwritten")
+    model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-large-handwritten")
+
+
+tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+bert_model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=1)
+
+def extract_text(image_bytes, processor, model):
+    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    pixel_values = processor(image, return_tensors="pt").pixel_values
+    generated_ids = model.generate(pixel_values)
+    extracted_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+    return extracted_text
+
+def grade_answer(extracted_text, keywords, weights):
+    if not keywords or not weights or len(keywords) != len(weights):
+        raise ValueError("Keywords and weights must be non-empty and of the same length")
+    
+    tokens = tokenizer(extracted_text, return_tensors="pt", padding=True, truncation=True)
+    
+    score = 0
+    for keyword, weight in zip(keywords, weights):
+        if keyword.lower() in extracted_text.lower():
+            score += weight
+    
+    return score
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded'}), 400
+    
+    file = request.files['file']
+    image_bytes = file.read()
+    processor = TrOCRProcessor.from_pretrained("microsoft/trocr-large-handwritten")
+    model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-large-handwritten")
+    extracted_text = extract_text(image_bytes, processor, model)
+    
+    # Retrieve keywords and weights from JSON payload
+    data = request.get_json()
+    keywords = data.get('keywords', [])
+    weights = data.get('weights', [])
+    
+    # Validate keywords and weights
+    if not keywords or not weights or len(keywords) != len(weights):
+        return jsonify({'error': 'Invalid keywords or weights'}), 400
+    
+    # Convert weights to float
+    try:
+        weights = list(map(float, weights))
+    except ValueError:
+        return jsonify({'error': 'Weights must be numeric'}), 400
+    
+    score = grade_answer(extracted_text, keywords, weights)
+    
+    return jsonify({'extracted_text': extracted_text, 'score': score})
 
 if __name__ == '__main__':
     with app.app_context():
