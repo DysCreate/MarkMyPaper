@@ -1,49 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Answer Sheet Grading</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .container { width: 50%; margin: auto; }
-        input, button { margin: 10px; padding: 10px; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Answer Sheet Grading</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    :root {
+      --primary: #00d9ff;
+      --dark: #0f172a;
+      --light: #f8fafc;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--dark), #1e293b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--light);
+      padding: 2rem;
+    }
+
+    .upload-container {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                  0 0 100px rgba(0, 217, 255, 0.1);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+
+    .upload-container h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      background: linear-gradient(to right, var(--primary), #6c63ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    input[type="file"],
+    input[type="text"] {
+      width: 100%;
+      margin: 1rem 0;
+      padding: 0.7rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--primary);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--light);
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input[type="file"]::file-selector-button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: var(--primary);
+      color: var(--dark);
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    input[type="text"]:focus {
+      border-color: #6c63ff;
+      box-shadow: 0 0 5px var(--primary);
+    }
+
+    button {
+      margin-top: 1.5rem;
+      background: var(--primary);
+      color: var(--dark);
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 217, 255, 0.3);
+    }
+
+    h3 {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
+
+    p {
+      margin-top: 0.5rem;
+      color: var(--light);
+    }
+
+    .glow-ring {
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, var(--primary), transparent);
+      filter: blur(70px);
+      opacity: 0.2;
+      border-radius: 50%;
+      animation: pulse 6s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.2;
+      }
+      50% {
+        transform: scale(1.3);
+        opacity: 0.3;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Upload Answer Sheet</h2>
-        <input type="file" id="fileInput" accept="image/*"><br>
-        <input type="text" id="keywords" placeholder="Enter keywords (comma separated)"><br>
-        <input type="text" id="weights" placeholder="Enter weights (comma separated)"><br>
-        <button onclick="uploadFile()">Submit</button>
-        <h3>Extracted Text:</h3>
-        <p id="extractedText"></p>
-        <h3>Score:</h3>
-        <p id="score"></p>
-    </div>
+  <div class="upload-container">
+    <div class="glow-ring"></div>
+    <h2>Upload Answer Sheet</h2>
+    
+    <input type="file" id="fileInput" accept="image/*">
+    <input type="text" id="keywords" placeholder="Enter keywords (comma separated)">
+    <input type="text" id="weights" placeholder="Enter weights (comma separated)">
+    
+    <button onclick="uploadFile()">Submit</button>
 
-    <script>
-        function uploadFile() {
-            let fileInput = document.getElementById("fileInput");
-            let keywords = document.getElementById("keywords").value.split(",");
-            let weights = document.getElementById("weights").value.split(",").map(Number);
-            let formData = new FormData();
-            formData.append("file", fileInput.files[0]);
-            keywords.forEach(k => formData.append("keywords", k.trim()));
-            weights.forEach(w => formData.append("weights", w));
+    <h3>Extracted Text:</h3>
+    <p id="extractedText"></p>
 
-            fetch("/upload", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("extractedText").textContent = data.extracted_text;
-                document.getElementById("score").textContent = data.score;
-            })
-            .catch(error => console.error("Error:", error));
-        }
-    </script>
+    <h3>Score:</h3>
+    <p id="score"></p>
+  </div>
+
+  <script>
+    function uploadFile() {
+      let fileInput = document.getElementById("fileInput");
+      let keywords = document.getElementById("keywords").value.split(",");
+      let weights = document.getElementById("weights").value.split(",").map(Number);
+      let formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+      keywords.forEach(k => formData.append("keywords", k.trim()));
+      weights.forEach(w => formData.append("weights", w));
+
+      fetch("/upload", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("extractedText").textContent = data.extracted_text;
+        document.getElementById("score").textContent = data.score;
+      })
+      .catch(error => console.error("Error:", error));
+    }
+  </script>
 </body>
 </html>

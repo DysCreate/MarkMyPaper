@@ -60,7 +60,6 @@ def serve_file(path):
         return render_template(path)
     return send_from_directory('static', path)
 
-# Routes
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -182,16 +181,14 @@ def reset_password():
 
     return jsonify({'message': 'Password reset failed'}), 400
 
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    processor = TrOCRProcessor.from_pretrained("microsoft/trocr-large-handwritten")
-    model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-large-handwritten")
 
+processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
+model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
 
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 bert_model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=1)
 
-def extract_text(image_bytes, processor, model):
+def extract_text(image_bytes):
     image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     pixel_values = processor(image, return_tensors="pt").pixel_values
     generated_ids = model.generate(pixel_values)
@@ -199,9 +196,6 @@ def extract_text(image_bytes, processor, model):
     return extracted_text
 
 def grade_answer(extracted_text, keywords, weights):
-    if not keywords or not weights or len(keywords) != len(weights):
-        raise ValueError("Keywords and weights must be non-empty and of the same length")
-    
     tokens = tokenizer(extracted_text, return_tensors="pt", padding=True, truncation=True)
     
     score = 0
@@ -211,9 +205,9 @@ def grade_answer(extracted_text, keywords, weights):
     
     return score
 
-@app.route('/')
-def home():
-    return render_template('home.html')
+@app.route('/upload', methods=['GET'])
+def upload_form():
+    return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -222,24 +216,10 @@ def upload():
     
     file = request.files['file']
     image_bytes = file.read()
-    processor = TrOCRProcessor.from_pretrained("microsoft/trocr-large-handwritten")
-    model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-large-handwritten")
-    extracted_text = extract_text(image_bytes, processor, model)
+    extracted_text = extract_text(image_bytes)
     
-    # Retrieve keywords and weights from JSON payload
-    data = request.get_json()
-    keywords = data.get('keywords', [])
-    weights = data.get('weights', [])
-    
-    # Validate keywords and weights
-    if not keywords or not weights or len(keywords) != len(weights):
-        return jsonify({'error': 'Invalid keywords or weights'}), 400
-    
-    # Convert weights to float
-    try:
-        weights = list(map(float, weights))
-    except ValueError:
-        return jsonify({'error': 'Weights must be numeric'}), 400
+    keywords = request.form.getlist('keywords')  
+    weights = list(map(float, request.form.getlist('weights')))  
     
     score = grade_answer(extracted_text, keywords, weights)
     
