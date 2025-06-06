@@ -1,5 +1,5 @@
 # MarkMyPaper
-An answer seet grading system using OCR
+An answer sheet grading system using OCR
 
 Features
 - Extract answers from scanned or photographed handwritten answer sheets.
