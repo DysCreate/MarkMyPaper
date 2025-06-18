@@ -8,3 +8,4 @@ Features
 - Calculates the score based on correctness and outputs the grade.
 - Handles multiple answer formats (e.g., multiple-choice questions).
 - Allows the addition of error correction and fuzzy matching for OCR inaccuracies.
+- Added support for pdf files.
