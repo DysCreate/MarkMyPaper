@@ -3,13 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from transformers import VisionEncoderDecoderModel, TrOCRProcessor
-from transformers import BertTokenizer, BertForSequenceClassification
+from transformers import BertTokenizer
 from PIL import Image
 import io
 import jwt
 import datetime
 from functools import wraps
 import os
+import PyPDF2  
 
 app = Flask(__name__)
 CORS(app)
@@ -21,14 +22,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-
 
 def token_required(f):
     @wraps(f)
@@ -39,7 +38,7 @@ def token_required(f):
             return jsonify({'message': 'Token is missing'}), 401
 
         try:
-            token = token.split(' ')[1]  # Remove 'Bearer ' prefix
+            token = token.split(' ')[1]  
             data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
             current_user = User.query.filter_by(id=data['user_id']).first()
         except Exception as e:
@@ -181,18 +180,25 @@ def reset_password():
 
     return jsonify({'message': 'Password reset failed'}), 400
 
-
 processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
 model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
 
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-bert_model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=1)
 
-def extract_text(image_bytes):
-    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    pixel_values = processor(image, return_tensors="pt").pixel_values
-    generated_ids = model.generate(pixel_values)
-    extracted_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+def extract_text(file_bytes, file_type):
+    if file_type in ['jpg', 'jpeg', 'png']:
+        image = Image.open(io.BytesIO(file_bytes)).convert("RGB")
+        pixel_values = processor(image, return_tensors="pt").pixel_values
+        generated_ids = model.generate(pixel_values)
+        extracted_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+    elif file_type == 'pdf':
+        pdf_reader = PyPDF2.PdfReader(io.BytesIO(file_bytes))
+        extracted_text = ""
+        for page in pdf_reader.pages:
+            extracted_text += page.extract_text()
+    else:
+        raise ValueError("Unsupported file type")
+    
     return extracted_text
 
 def grade_answer(extracted_text, keywords, weights):
@@ -213,16 +219,21 @@ def upload_form():
 def upload():
     if 'file' not in request.files:
         return jsonify({'error': 'No file uploaded'}), 400
-    
+
     file = request.files['file']
-    image_bytes = file.read()
-    extracted_text = extract_text(image_bytes)
-    
-    keywords = request.form.getlist('keywords')  
-    weights = list(map(float, request.form.getlist('weights')))  
-    
+    file_bytes = file.read()
+    file_type = file.filename.split('.')[-1].lower()
+
+    if file_type not in ['pdf', 'jpg', 'jpeg', 'png']:
+        return jsonify({'error': 'Unsupported file type'}), 400
+
+    extracted_text = extract_text(file_bytes, file_type)
+
+    keywords = request.form.getlist('keywords')
+    weights = list(map(float, request.form.getlist('weights')))
+
     score = grade_answer(extracted_text, keywords, weights)
-    
+
     return jsonify({'extracted_text': extracted_text, 'score': score})
 
 if __name__ == '__main__':
