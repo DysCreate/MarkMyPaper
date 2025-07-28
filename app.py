@@ -9,8 +9,8 @@ import io
 import jwt
 import datetime
 from functools import wraps
-import os
 import PyPDF2  
+from thefuzz import fuzz
 
 app = Flask(__name__)
 CORS(app)
@@ -200,15 +200,33 @@ def extract_text(file_bytes, file_type):
         raise ValueError("Unsupported file type")
     
     return extracted_text
-
+    
 def grade_answer(extracted_text, keywords, weights):
-    tokens = tokenizer(extracted_text, return_tensors="pt", padding=True, truncation=True)
+    """
+    Grades the extracted text based on keyword presence, supporting partial matches.
+    """
+    # Define the similarity score thresholds for matching
+    # A score of 100 is a perfect match. These can be adjusted.
+    FULL_MATCH_THRESHOLD = 90    # Anything with a similarity score of 90% or higher is a full match.
+    PARTIAL_MATCH_THRESHOLD = 70 # Anything between 70% and 89% is a partial match.
     
     score = 0
+    text_lower = extracted_text.lower()
+
     for keyword, weight in zip(keywords, weights):
-        if keyword.lower() in extracted_text.lower():
+        keyword_lower = keyword.lower()
+        
+        # fuzz.partial_ratio is effective at finding the keyword as a substring
+        # within the larger text, and it's robust against minor OCR errors or typos.
+        similarity_score = fuzz.partial_ratio(keyword_lower, text_lower)
+        
+        if similarity_score >= FULL_MATCH_THRESHOLD:
+            # Full match found, award full weight
             score += weight
-    
+        elif similarity_score >= PARTIAL_MATCH_THRESHOLD:
+            # Partial match found, award half weight
+            score += weight / 2
+            
     return score
 
 @app.route('/upload', methods=['GET'])
