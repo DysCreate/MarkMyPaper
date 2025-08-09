@@ -137,7 +137,7 @@
     <h2>Upload Answer Sheet</h2>
     
     <input type="file" id="fileInput" accept="application/pdf">
-    <input type="text" id="keywords" placeholder="Enter keywords (comma separated)">
+    <input type="text" id="answers" placeholder="Enter model answers (separate multiple answers with semicolon)">
     <input type="text" id="weights" placeholder="Enter weights (comma separated)">
     
     <button onclick="uploadFile()">Submit</button>
@@ -145,18 +145,21 @@
     <h3>Extracted Text:</h3>
     <p id="extractedText"></p>
 
-    <h3>Score:</h3>
+    <h3>Results:</h3>
+    <div id="results"></div>
+
+    <h3>Total Score:</h3>
     <p id="score"></p>
   </div>
 
   <script>
     function uploadFile() {
       let fileInput = document.getElementById("fileInput");
-      let keywords = document.getElementById("keywords").value.split(",");
+      let answers = document.getElementById("answers").value.split(";");
       let weights = document.getElementById("weights").value.split(",").map(Number);
       let formData = new FormData();
       formData.append("file", fileInput.files[0]);
-      keywords.forEach(k => formData.append("keywords", k.trim()));
+      answers.forEach(a => formData.append("answers", a.trim()));
       weights.forEach(w => formData.append("weights", w));
 
       fetch("/upload", {
@@ -166,7 +169,15 @@
       .then(response => response.json())
       .then(data => {
         document.getElementById("extractedText").textContent = data.extracted_text;
-        document.getElementById("score").textContent = data.score;
+        document.getElementById("score").textContent = `Total Score: ${data.total_score}`;
+        
+        // Display detailed results
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = data.results.map(result => `
+          <p>Answer: ${result.model_answer}<br>
+             Similarity: ${result.similarity}%<br>
+             Score: ${result.score}/${result.max_score}</p>
+        `).join('<hr>');
       })
       .catch(error => console.error("Error:", error));
     }
