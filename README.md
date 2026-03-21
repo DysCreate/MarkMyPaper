@@ -1,62 +1,117 @@
 # MarkMyPaper
 
-🚀 Table of Contents
+MarkMyPaper is a Flask-based web application for automated grading of handwritten or typed answer submissions. It combines OCR (TrOCR), PDF/image text extraction, and fuzzy text matching to compare student responses against model answers.
 
-# Overview
+## Features
 
-#Features
+- User authentication (register, login, profile, logout)
+- JWT-protected API routes
+- Password reset token flow
+- Upload support for `PDF`, `JPG`, `JPEG`, and `PNG`
+- OCR/text extraction pipeline:
+    - TrOCR for images
+    - PyPDF2 for PDFs
+- Weighted answer grading using similarity scoring
+- Result breakdown per model answer + total score
 
-# Tech Stack
+## Tech Stack
 
-# Installation
+- Python 3
+- Flask, Flask-SQLAlchemy, Flask-CORS
+- Transformers (`microsoft/trocr-base-handwritten`)
+- PyTorch
+- Pillow, PyPDF2
+- TheFuzz (`token_sort_ratio`) for grading similarity
+- SQLite (via SQLAlchemy)
 
-# Usage
+## Project Structure
 
-# Project Structure
+```text
+MarkMyPaper/
+├── app.py
+├── requirements.txt
+├── templates/
+│   ├── dashboard.html
+│   ├── home.html
+│   ├── login.html
+│   ├── trial.html
+│   └── upload.html
+└── static/
+        ├── home.css
+        ├── login.css
+        └── styles.css
+```
 
-# Contributing
+## Getting Started
 
-# License
+### 1) Clone the repository
 
-# 📄 Overview
+```bash
+git clone https://github.com/DysCreate/MarkMyPaper.git
+cd MarkMyPaper
+```
 
-MarkMyPaper automates the grading of Multiple-Choice Questions (MCQ) and Open-Ended Questions (OEQ) using deep learning and optical mark recognition. Ideal for educators seeking fast, accurate, and efficient evaluation.
-✅ Features
+### 2) Create and activate a virtual environment (recommended)
 
-- Detects and scores MCQ answers using OMR techniques
+```bash
+python -m venv .venv
+```
 
-- Processes OEQ answers with OCR or predefined templates
+Windows (PowerShell):
 
-- GUI-based interface for ease of use (gui.py)
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
 
-- Configurable via CONF.INI for dataset and output options
+macOS/Linux:
 
-# 🧰 Tech Stack
+```bash
+source .venv/bin/activate
+```
 
-- Language: Python
+### 3) Install dependencies
 
-- Libraries: TensorFlow, OpenCV, 
+```bash
+pip install -r requirements.txt
+```
 
-- Model: TrOCR
+### 4) Run the application
 
+```bash
+python app.py
+```
 
-# ⚙️Installation
--1. Clone the repo
+The app starts in debug mode at `http://127.0.0.1:5000`.
 
-    git clone https://github.com/DysCreate/MarkMyPaper.git
-    cd MarkMyPaper
-    
--2. (Optional) Create virtual environment
+> On first run, Hugging Face model files for TrOCR are downloaded, so startup may take longer.
 
-    python3 -m venv venv
-    source venv/bin/activate  # macOS/Linux
-    venv\Scripts\activate     # Windows
-    
--3. Install dependencies
+## API Overview
 
-    pip install -r requirements.txt
-    
--4. Configure
+### Auth
 
-    Edit CONF.INI to set file paths, model options, etc.
+- `POST /api/register`
+- `POST /api/login`
+- `GET /api/user` (requires `Authorization: Bearer <token>`)
+- `POST /api/logout` (requires token)
+- `POST /api/reset-password-request`
+- `POST /api/reset-password`
+
+### Grading
+
+- `POST /upload`
+    - Form-data fields:
+        - `file` (PDF/image)
+        - `answers` (repeatable)
+        - `weights` (repeatable)
+    - Returns extracted text, per-answer similarity/score, and total score
+
+## Notes
+
+- User data is stored in local SQLite (`instance/users.db`).
+- `SECRET_KEY` is currently hardcoded in `app.py`; for production use, move it to an environment variable.
+- This project is set up for local development and experimentation.
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
