@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service / MarkMyPaper</title>
+  <link rel="stylesheet" href="/static/site.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap masthead__inner">
+      <a class="brand" href="home.html">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2" fill="#B4452A" />
+          <path d="M7 17.5 17 6.5" stroke="#F5F0E6" stroke-width="2.2" stroke-linecap="round" />
+        </svg>
+        <span>MarkMyPaper</span>
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav">
+          <li class="nav__links"><a href="home.html">Home</a></li>
+          <li class="nav__links"><a href="privacy.html">Privacy Policy</a></li>
+          <li class="nav__actions"><a class="btn btn--red" href="upload.html">Open the grader</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap legal">
+      <p class="eyebrow">Legal</p>
+      <h1>Terms of Service</h1>
+      <p class="updated">Effective date: 20 September 2026</p>
+
+      <p class="bigger">
+        Before anything else, one fact that affects the whole document:
+        MarkMyPaper is free software that you run yourself. The pages you are
+        reading are served by your own copy of the application on your own
+        computer. There is no MarkMyPaper hosted service, no MarkMyPaper
+        account server, and no MarkMyPaper vendor that stores your data.
+      </p>
+
+      <div class="toc">
+        <strong>Contents</strong><br />
+        <a href="#t1">1. Acceptance</a> <a href="#t2">2. What this software is</a>
+        <a href="#t3">3. Accounts and credentials</a> <a href="#t4">4. Your materials</a>
+        <a href="#t5">5. Responsible use</a> <a href="#t6">6. No warranty</a>
+        <a href="#t7">7. Limitation of liability</a> <a href="#t8">8. License</a>
+        <a href="#t9">9. Changes to these terms</a> <a href="#t10">10. Contact</a>
+      </div>
+
+      <h2 id="t1">1. Acceptance</h2>
+      <p>
+        By installing, running, or modifying MarkMyPaper, you agree to these
+        terms. If you operate MarkMyPaper for a school, department, or employer,
+        you represent that you have authority to agree to them on that
+        organization's behalf.
+      </p>
+
+      <h2 id="t2">2. What this software is</h2>
+      <p>
+        MarkMyPaper reads uploaded answer sheets and produces similarity-based
+        grading suggestions. In the current implementation it does the following:
+      </p>
+      <ul>
+        <li>accepts PDF, JPG, JPEG, and PNG files;</li>
+        <li>extracts text, using PyPDF2 for embedded PDF text and TrOCR for
+            rendered pages and images;</li>
+        <li>compares the extracted text against model answers with token-level
+            fuzzy matching, awarding full weight at 80% similarity or better,
+            proportional weight from 70% to 79%, and nothing below 70%;</li>
+        <li>stores grading runs in a local SQLite database when history is
+            enabled, which it is by default.</li>
+      </ul>
+      <p>
+        This version is the only version whose behavior these terms describe.
+        The repository may change at any time.
+      </p>
+
+      <h2 id="t3">3. Accounts and credentials</h2>
+      <p>
+        Registration stores your name, email, and a hashed password in the
+        local database file (instance/users.db). Logging in issues a JWT that
+        your browser keeps in local storage. Passwords are hashed with a
+        one-way function; the application cannot recover them. You are
+        responsible for keeping your own copy of the database and its
+        credential records secure, since you control the machine it lives on.
+      </p>
+
+      <h2 id="t4">4. Your materials</h2>
+      <p>
+        Answer sheets, model answers, names, marks, and extracted text are your
+        materials. You are responsible for the lawfulness of what you process,
+        including any applicable consent, privacy, and data protection law for
+        student records in your jurisdiction, such as FERPA in the United States
+        or the GDPR in the EEA. You should give students notice before their
+        sheets are processed by automated optical character recognition, which
+        generates a text transcription of handwritten and printed content.
+      </p>
+
+      <h2 id="t5">5. Responsible use</h2>
+      <p>
+        Automated grading output is a measurement aid, not a final decision.
+        You should verify low, borderline, and handwriting-heavy results against
+        the original sheet before recording a mark. Do not present a MarkMyPaper
+        score to a student as authoritative without review. Do not use the
+        application in any way that violates your institution's academic
+        integrity policies.
+      </p>
+
+      <h2 id="t6">6. No warranty</h2>
+      <p>
+        The software is provided as is, without warranty of any kind, express
+        or implied, including but not limited to warranties of merchantability,
+        fitness for a particular purpose, and noninfringement. It is distributed
+        under the MIT License. A theoretically perfect OCR still cannot read an
+        illegible scan, and fuzzy matching may disagree with a human marker.
+      </p>
+
+      <h2 id="t7">7. Limitation of liability</h2>
+      <p>
+        In no event and under no legal theory shall the authors or copyright
+        holders be liable for any damages or liability, including any direct,
+        indirect, special, incidental, or consequential damages of any character
+        arising from the use or inability to use the software, even if advised
+        of the possibility of such damages. Because you run the software
+        yourself, this limitation also protects you from liability to third
+        parties for grading outcomes produced on your own machine.
+      </p>
+
+      <h2 id="t8">8. License</h2>
+      <p>
+        MarkMyPaper is distributed under the MIT License, the text of which is
+        included in the repository. You may use, copy, modify, merge, publish,
+        distribute, sublicense, and sell copies, subject to the preservation of
+        the copyright notice and these terms.
+      </p>
+
+      <h2 id="t9">9. Changes to these terms</h2>
+      <p>
+        These terms describe the behavior of this version of the software. If a
+        future version changes how data is handled, the terms will be updated
+        and a new effective date will be shown at the top. Because the terms
+        live in the repository, the dated history of the document is available
+        through the version control log.
+      </p>
+
+      <h2 id="t10">10. Contact</h2>
+      <p>
+        MarkMyPaper is maintained through the public repository at
+        <a href="https://github.com/DysCreate/MarkMyPaper" target="_blank" rel="noopener">github.com/DysCreate/MarkMyPaper</a>.
+        Questions about the software should be raised on the issue tracker in
+        that repository. There is no separate company inbox because there is no
+        company.
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__base">
+      <span>MarkMyPaper · Terms of Service</span>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </footer>
+</body>
+</html>

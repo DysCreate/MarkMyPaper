@@ -1,577 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mark My Paper - AI-Powered Answer Sheet Grading</title>
-    <link rel="stylesheet" href="../static/home.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script defer src="script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarkMyPaper: self-hosted answer sheet grading</title>
+  <meta name="description" content="MarkMyPaper reads answer sheets with OCR and scores each model answer by measured text similarity. It runs on your own machine and keeps every file local." />
+  <link rel="stylesheet" href="/static/site.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <i class="fas fa-check-circle"></i>
-                Mark My Paper
-            </div>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-                <li><a href="login.html" class="btn login">Login</a></li>
-                <li><a href="trial.html" class="btn trial">Start Free Trial</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header class="masthead">
+    <div class="wrap masthead__inner">
+      <a class="brand" href="home.html">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2" fill="#B4452A" />
+          <path d="M7 17.5 17 6.5" stroke="#F5F0E6" stroke-width="2.2" stroke-linecap="round" />
+        </svg>
+        <span>MarkMyPaper<span class="brand__slug">answer sheet grading</span></span>
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav">
+          <li class="nav__links"><a href="#how">How grading works</a></li>
+          <li class="nav__links"><a href="#limits">Limits</a></li>
+          <li class="nav__links"><a href="#run">Run locally</a></li>
+          <li class="nav__actions">
+            <a class="btn btn--ghost" href="login.html">Log in</a>
+            <a class="btn btn--red" href="upload.html">Open the grader</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>Grade Answer Sheets in Seconds with AI</h1>
-                <p>Transform your grading process with our cutting-edge AI technology. Save hours of manual work and ensure consistent, unbiased evaluation.</p>
-                <div class="hero-buttons">
-                    <a href="#demo" class="btn primary">Watch Demo</a>
-                    <a href="#features" class="btn secondary">Explore Features</a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-number">99.9%</span>
-                        <span class="stat-label">Accuracy</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">10x</span>
-                        <span class="stat-label">Faster Grading</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">5000+</span>
-                        <span class="stat-label">Happy Teachers</span>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-image">
-                <div class="particles">
-                    <div class="particle"></div>
-                    <div class="particle"></div>
-                    <div class="particle"></div>
-                    <div class="particle"></div>
-                    <div class="particle"></div>
-                </div>
-                <div class="mockup-container">
-                    <div class="mockup-window">
-                        <div class="window-header">
-                            <div class="window-buttons">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="window-title">AI Grading Dashboard</div>
-                        </div>
-                        <div class="window-content">
-                            <div class="grading-preview">
-                                <div class="answer-sheet">
-                                    <div class="sheet-header">
-                                        <i class="fas fa-file-alt"></i>
-                                        <span>Answer Sheet Analysis</span>
-                                    </div>
-                                    <div class="grade-progress">
-                                        <div class="progress-bar">
-                                            <div class="progress-fill"></div>
-                                        </div>
-                                        <span class="progress-text">Analyzing...</span>
-                                    </div>
-                                    <div class="grade-stats">
-                                        <div class="stat-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>Correct: 42/50</span>
-                                        </div>
-                                        <div class="stat-item">
-                                            <i class="fas fa-clock"></i>
-                                            <span>Time: 2.3s</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="results-preview">
-                                    <div class="result-item">
-                                        <div class="result-marker correct"></div>
-                                        <div class="result-text">Question 1</div>
-                                    </div>
-                                    <div class="result-item">
-                                        <div class="result-marker correct"></div>
-                                        <div class="result-text">Question 2</div>
-                                    </div>
-                                    <div class="result-item analyzing">
-                                        <div class="result-marker"></div>
-                                        <div class="result-text">Question 3</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="floating-elements">
-                    <div class="floating-element grade">
-                        <i class="fas fa-check-circle"></i>
-                        <p>Smart Grading</p>
-                    </div>
-                    <div class="floating-element accuracy">
-                        <i class="fas fa-bullseye"></i>
-                        <p>99.9% Accurate</p>
-                    </div>
-                    <div class="floating-element speed">
-                        <i class="fas fa-bolt"></i>
-                        <p>Lightning Fast</p>
-                    </div>
-                </div>
-            </div>
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__text">
+        <p class="eyebrow">MarkMyPaper / self-hosted answer sheet grading</p>
+        <h1>Read the paper.<br />Measure the answers.<br /><span class="red">Show the score.</span></h1>
+        <p class="hero__lede">
+          Upload answer sheets as PDF or image, list the model answers you are
+          checking for, and get a per-answer similarity score in the same run.
+          Extraction runs on your machine: TrOCR reads handwriting, PyPDF2 reads
+          digital text, and grading uses token-level fuzzy matching. Every file
+          stays on your computer. No account is required to grade.
+        </p>
+        <div class="hero__ctas">
+          <a class="btn btn--red stamp" href="upload.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 16V4M7 8l5-4 5 4M5 19h14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Open the grader
+          </a>
+          <a class="btn btn--ghost" href="#how">Read how grading works</a>
         </div>
-    </section>
-
-    <section class="upload-navigation">
-        <div class="nav-container">
-            <div class="nav-content">
-                <div class="nav-text">
-                    <h2>Ready to Grade?</h2>
-                    <p>Start grading your answer sheets now with our AI-powered system</p>
-                    <a href="upload.html" class="upload-btn">
-                        <span class="btn-content">
-                            <i class="fas fa-upload"></i>
-                            <span>Upload Answer Sheets</span>
-                        </span>
-                        <div class="btn-particles">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </a>
-                </div>
-                <div class="nav-visual">
-                    <div class="visual-container">
-                        <div class="grading-preview">
-                            <div class="preview-header">
-                                <div class="preview-title">AI Grading System</div>
-                                <div class="preview-status active">Active</div>
-                            </div>
-                            <div class="preview-content">
-                                <div class="preview-item">
-                                    <div class="item-icon">
-                                        <i class="fas fa-file-alt"></i>
-                                    </div>
-                                    <div class="item-info">
-                                        <div class="item-title">Answer Sheet</div>
-                                        <div class="item-status">Ready to Process</div>
-                                    </div>
-                                </div>
-                                <div class="preview-item">
-                                    <div class="item-icon">
-                                        <i class="fas fa-check-circle"></i>
-                                    </div>
-                                    <div class="item-info">
-                                        <div class="item-title">AI Analysis</div>
-                                        <div class="item-status">Processing</div>
-                                    </div>
-                                </div>
-                                <div class="preview-item">
-                                    <div class="item-icon">
-                                        <i class="fas fa-chart-bar"></i>
-                                    </div>
-                                    <div class="item-info">
-                                        <div class="item-title">Results</div>
-                                        <div class="item-status">Generating</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="spec-strip">
+          formats <span class="hl">pdf / jpg / jpeg / png</span> &nbsp;·&nbsp;
+          stack <span class="hl">flask + sqlite + thefuzz</span> &nbsp;·&nbsp;
+          license <span class="hl">MIT</span> &nbsp;·&nbsp;
+          telemetry <span class="hl">none</span>
         </div>
-    </section>
+      </div>
 
-    <section id="features">
-        <h2>Powerful Features</h2>
-        <div class="features-container">
-            <div class="feature-card">
-                <i class="fas fa-bolt"></i>
-                <h3>Lightning-Fast Grading</h3>
-                <p>Grade hundreds of answer sheets in minutes with our advanced AI technology.</p>
-                <ul class="feature-list">
-                    <li>Multiple-choice questions</li>
-                    <li>Written responses</li>
-                    <li>Mathematical equations</li>
-                </ul>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-chart-line"></i>
-                <h3>Smart Analytics</h3>
-                <p>Get detailed insights into student performance and identify areas for improvement.</p>
-                <ul class="feature-list">
-                    <li>Performance tracking</li>
-                    <li>Progress reports</li>
-                    <li>Custom analytics</li>
-                </ul>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-shield-alt"></i>
-                <h3>Reliable & Secure</h3>
-                <p>Enterprise-grade security with 99.9% accuracy in grading.</p>
-                <ul class="feature-list">
-                    <li>Data encryption</li>
-                    <li>Error detection</li>
-                    <li>Backup systems</li>
-                </ul>
-            </div>
+      <aside class="spread" aria-label="Product sheet">
+        <p class="panel__title">Product sheet</p>
+        <dl class="spread__row"><dt>Reads</dt><dd>scan-and-upload OCR, embedded PDF text</dd></dl>
+        <dl class="spread__row"><dt>Grades by</dt><dd>token-level fuzzy similarity</dd></dl>
+        <dl class="spread__row"><dt>Marks per answer</dt><dd>configurable weight, capped at it</dd></dl>
+        <dl class="spread__row"><dt>Keeps files</dt><dd>in memory, on your hardware</dd></dl>
+        <dl class="spread__row"><dt>History</dt><dd>local SQLite on your machine</dd></dl>
+        <dl class="spread__row"><dt>Auth</dt><dd>optional, JWT after registration</dd></dl>
+        <dl class="spread__row"><dt>Source</dt><dd>open, MIT license, on GitHub</dd></dl>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--deep" id="how">
+    <div class="wrap">
+      <p class="eyebrow">Pipeline</p>
+      <h2 class="section-title">How grading happens</h2>
+      <div class="ledger">
+        <div class="ledger__row">
+          <span class="ledger__num">01</span>
+          <div>
+            <h3>Upload the sheet</h3>
+            <p>One PDF, JPG, JPEG, or PNG file per run. Text-based PDF pages are read directly; image pages and photo scans are transcribed by the OCR pass.</p>
+            <p class="ledger__mono">format enforced: pdf / jpg / jpeg / png</p>
+          </div>
         </div>
-    </section>
-
-    <section id="how-it-works">
-        <h2>How It Works</h2>
-        <div class="steps-container">
-            <div class="step">
-                <div class="step-number">1</div>
-                <h3>Upload Answer Sheets</h3>
-                <p>Simply scan and upload answer sheets</p>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <h3>AI Processing</h3>
-                <p>Our AI analyzes and grades each response</p>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <h3>Get Results</h3>
-                <p>Download detailed reports and analytics</p>
-            </div>
+        <div class="ledger__row">
+          <span class="ledger__num">02</span>
+          <div>
+            <h3>State the model answers</h3>
+            <p>Enter one model answer per check and give each a weight. The weight is the most marks that answer can earn, and the answer as you type it is the reference text used for comparison.</p>
+            <p class="ledger__mono">answers and weights are matched by position</p>
+          </div>
         </div>
-    </section>
-
-    <section id="pricing">
-        <h2>Simple Pricing</h2>
-        <div class="pricing-container">
-            <div class="price-card starter">
-                <h3>Starter</h3>
-                <div class="price">$0</div>
-                <p class="duration">3-day trial</p>
-                <ul>
-                    <li><i class="fas fa-check"></i> 100 sheets/month</li>
-                    <li><i class="fas fa-check"></i> Basic analytics</li>
-                    <li><i class="fas fa-check"></i> Email support</li>
-                </ul>
-                <button class="btn">Start Trial</button>
-            </div>
-            <div class="price-card pro">
-                <div class="popular">Most Popular</div>
-                <h3>Pro</h3>
-                <div class="price">$5</div>
-                <p class="duration">per month</p>
-                <ul>
-                    <li><i class="fas fa-check"></i> 1000 sheets/month</li>
-                    <li><i class="fas fa-check"></i> Advanced analytics</li>
-                    <li><i class="fas fa-check"></i> Priority support</li>
-                    <li><i class="fas fa-check"></i> Custom reports</li>
-                </ul>
-                <button class="btn">Choose Pro</button>
-            </div>
-            <div class="price-card enterprise">
-                <h3>Enterprise</h3>
-                <div class="price">Custom</div>
-                <p class="duration">tailored solution</p>
-                <ul>
-                    <li><i class="fas fa-check"></i> Unlimited sheets</li>
-                    <li><i class="fas fa-check"></i> Custom integration</li>
-                    <li><i class="fas fa-check"></i> 24/7 support</li>
-                    <li><i class="fas fa-check"></i> API access</li>
-                </ul>
-                <button class="btn">Contact Sales</button>
-            </div>
+        <div class="ledger__row">
+          <span class="ledger__num">03</span>
+          <div>
+            <h3>Extract the text</h3>
+            <p>PyPDF2 pulls embedded text out of digital PDFs. Scanned pages and images are rendered and transcribed with TrOCR, a transformer model trained on handwriting. The force-OCR switch skips embedded text and transcribes every page.</p>
+            <p class="ledger__mono">text route: PyPDF2 / image route: TrOCR</p>
+          </div>
         </div>
-    </section>
-
-    <section id="contact">
-        <h2>Get Started Today</h2>
-        <div class="contact-container">
-            <form class="contact-form">
-                <div class="form-group">
-                    <input type="text" placeholder="Full Name" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" placeholder="Email Address" required>
-                </div>
-                <div class="form-group">
-                    <select required>
-                        <option value="">Select Package</option>
-                        <option value="starter">Starter</option>
-                        <option value="pro">Pro</option>
-                        <option value="enterprise">Enterprise</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <textarea placeholder="Tell us about your needs" required></textarea>
-                </div>
-                <button type="submit" class="btn">Get Started</button>
-            </form>
+        <div class="ledger__row">
+          <span class="ledger__num">04</span>
+          <div>
+            <h3>Score each answer</h3>
+            <p>The combined extracted text is compared against every model answer with token-level fuzzy matching. A similarity of 80 and above earns the full weight, 70 to 79 earns proportionally, and anything below earns nothing.</p>
+            <p class="ledger__mono">similarity 80+ full marks, 70 to 79 proportional, below 70 none</p>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Mark My Paper</h4>
-                <p>Revolutionizing answer sheet grading with AI technology.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-github"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Contact</h4>
-                <p>Email: info@markmypaper.ai</p>
-                <p>Phone: (555) 123-4567</p>
-            </div>
+  <section class="section" id="result-shape">
+    <div class="wrap">
+      <p class="eyebrow">Sample output</p>
+      <h2 class="section-title">What a result looks like</h2>
+      <div class="grader">
+        <div>
+          <p>
+            This panel mirrors the real output of a grading run using sample
+            text. Each model answer returns its similarity percentage, the marks
+            earned against its weight, and a band: full, partial, or below
+            threshold. Full output stays on the same page in the grader.
+          </p>
+          <p class="spacer" style="height: 1.2rem;"></p>
+          <p class="ledger__mono">source: explanatory sample, not a product screenshot</p>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 Mark My Paper. All rights reserved.</p>
+        <div class="result-sample">
+          <div class="result-sample__head">
+            <span>run 12 / sample.docx.pdf</span>
+            <span>3 pages · 2 of 2 OCR</span>
+          </div>
+          <div class="result-row" style="padding: 1rem 1.2rem;">
+            <div class="result-row__top">
+              <span class="result-row__q">Q1</span>
+              <span class="band band--full">full mark</span>
+            </div>
+            <div class="result-row__answer">The water cycle moves water between sky and land.</div>
+            <div class="result-row__score">92% similar · 5.0 / 5.0</div>
+          </div>
+          <div class="result-row" style="padding: 1rem 1.2rem;">
+            <div class="result-row__top">
+              <span class="result-row__q">Q2</span>
+              <span class="band band--partial">partial</span>
+            </div>
+            <div class="result-row__answer">Photosynthesis needs sunlight and chlorophyll.</div>
+            <div class="result-row__score">74% similar · 2.2 / 4.0</div>
+          </div>
+          <div class="result-row" style="padding: 1rem 1.2rem; border-bottom: none;">
+            <div class="result-row__top">
+              <span class="result-row__q">Q3</span>
+              <span class="band band--low">below threshold</span>
+            </div>
+            <div class="result-row__answer">Napoleon invaded Russia in the winter of 1812.</div>
+            <div class="result-row__score">41% similar · 0.0 / 3.0</div>
+          </div>
         </div>
-    </footer>
+      </div>
+    </div>
+  </section>
 
-    <style>
-        .upload-navigation {
-            padding: 6rem 2rem;
-            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-secondary) 100%);
-            position: relative;
-            overflow: hidden;
-        }
+  <section class="section section--deep" id="limits">
+    <div class="wrap">
+      <p class="eyebrow">Honesty, in one place</p>
+      <h2 class="section-title">Limits worth knowing</h2>
+      <div class="panel">
+        <ul class="prose-list">
+          <li><b>Similarity is token based.</b> Long, well-written answers against short model keys can score low even when the student is right. Model answers should stay close to the phrasing you expect.</li>
+          <li><b>Handwriting OCR is approximate.</b> TrOCR transcribes legibility, not truth. Poor scans and mixed scripts raise error rates, so read the extracted text before trusting a low score.</li>
+          <li><b>One text stream per run.</b> Multi-page PDFs are joined into a single text stream before scoring, so the tool scores the whole sheet, not question by question. Per-page extraction is still reported in the result.</li>
+          <li><b>First run is slow.</b> The TrOCR model downloads once from Hugging Face on your first grading run, and transcription is heavy on CPU. Small test files are a good way to start.</li>
+          <li><b>You own the final call.</b> Grading here is a measurement aid. The mark you record should be yours.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
+  <section class="section section--ink" id="run">
+    <div class="wrap">
+      <p class="eyebrow" style="color: #E89C83;">Self-hosted</p>
+      <h2 class="section-title" style="color: var(--paper);">Run it on your machine</h2>
+      <div class="grader">
+        <div>
+          <p style="color: #B9BFB8;">
+            MarkMyPaper is a small Flask application. It runs wherever Python
+            runs, keeps its data in a local SQLite file, and processes uploaded
+            sheets in memory on your own hardware. Cloning the repository and
+            starting the app is the whole setup.
+          </p>
+          <p style="color: #B9BFB8; margin-top: 1rem;">
+            Users who grade sheets can skip registration entirely. An account
+            only gates the password-protected API and attaches a name to grading
+            records in your local database.
+          </p>
+        </div>
+        <div>
+          <div class="codeblock"><span class="dim"># requires Python 3.9+</span>
+git clone https://github.com/DysCreate/MarkMyPaper
+cd MarkMyPaper
+python -m venv .venv
+source .venv/bin/activate      <span class="dim"># Windows: .venv\Scripts\Activate</span>
+pip install -r requirements.txt
+python app.py</div>
+          <div class="band band--inactive" style="margin-top: 1rem;">serves on http://127.0.0.1:5000</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        .nav-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .nav-text {
-            color: var(--light);
-        }
-
-        .nav-text h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-text p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .upload-btn {
-            display: inline-block;
-            position: relative;
-            padding: 1.2rem 2.5rem;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            border-radius: 50px;
-            color: var(--light);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .btn-content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .btn-particles span {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: particleFloat 2s infinite;
-        }
-
-        .btn-particles span:nth-child(1) {
-            left: 20%;
-            animation-delay: 0s;
-        }
-
-        .btn-particles span:nth-child(2) {
-            left: 50%;
-            animation-delay: 0.5s;
-        }
-
-        .btn-particles span:nth-child(3) {
-            left: 80%;
-            animation-delay: 1s;
-        }
-
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 0;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) scale(0);
-                opacity: 0;
-            }
-        }
-
-        .upload-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .upload-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            transition: 0.5s;
-        }
-
-        .upload-btn:hover::before {
-            left: 100%;
-        }
-
-        .nav-visual {
-            position: relative;
-        }
-
-        .visual-container {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transform: perspective(1000px) rotateY(-5deg);
-            transition: transform 0.3s ease;
-        }
-
-        .visual-container:hover {
-            transform: perspective(1000px) rotateY(0deg);
-        }
-
-        .preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .preview-title {
-            color: var(--primary);
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .preview-status {
-            padding: 0.5rem 1rem;
-            background: rgba(46, 204, 113, 0.2);
-            color: var(--secondary);
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-
-        .preview-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .preview-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .preview-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(10px);
-        }
-
-        .item-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--light);
-        }
-
-        .item-info {
-            flex: 1;
-        }
-
-        .item-title {
-            color: var(--light);
-            font-weight: 500;
-            margin-bottom: 0.2rem;
-        }
-
-        .item-status {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            .nav-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .nav-text h2 {
-                font-size: 2rem;
-            }
-
-            .visual-container {
-                transform: none;
-            }
-        }
-    </style>
+  <footer class="footer">
+    <div class="footer__grid">
+      <div>
+        <a class="brand" href="home.html" style="margin-bottom: 0.9rem;">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2" fill="#B4452A" />
+            <path d="M7 17.5 17 6.5" stroke="#F5F0E6" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+          <span>MarkMyPaper</span>
+        </a>
+        <p>A self-hosted answer sheet grader. Reads the sheet with OCR, grades by measured text similarity, and keeps the files and history on your machine.</p>
+      </div>
+      <div>
+        <h4>Use</h4>
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="upload.html">Open the grader</a></li>
+          <li><a href="dashboard.html">Grading history</a></li>
+          <li><a href="start.html">Start here</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="https://github.com/DysCreate/MarkMyPaper/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Source</h4>
+        <ul>
+          <li>
+            <a href="https://github.com/DysCreate/MarkMyPaper" target="_blank" rel="noopener" class="gap-run" style="gap: 0.45rem;">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.25c0 4.54 2.87 8.39 6.86 9.75.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.72-2.79.62-3.38-1.38-3.38-1.38-.46-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.36 9.36 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.95.68 1.92 0 1.38-.01 2.5-.01 2.84 0 .27.18.6.69.49A10.25 10.25 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
+              GitHub repository
+            </a>
+          </li>
+          <li><a href="https://github.com/DysCreate/MarkMyPaper/issues" target="_blank" rel="noopener">Report a problem</a></li>
+          <li><a href="dashboard.html" class="mono">/api/history</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__base">
+      <span>MarkMyPaper · MIT license · no telemetry</span>
+      <span>flask / sqlite / thefuzz / trocr</span>
+    </div>
+  </footer>
 </body>
 </html>
