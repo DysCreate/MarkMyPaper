@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy / MarkMyPaper</title>
+  <link rel="stylesheet" href="/static/site.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap masthead__inner">
+      <a class="brand" href="home.html">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2" fill="#B4452A" />
+          <path d="M7 17.5 17 6.5" stroke="#F5F0E6" stroke-width="2.2" stroke-linecap="round" />
+        </svg>
+        <span>MarkMyPaper</span>
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav">
+          <li class="nav__links"><a href="home.html">Home</a></li>
+          <li class="nav__links"><a href="terms.html">Terms of Service</a></li>
+          <li class="nav__actions"><a class="btn btn--red" href="upload.html">Open the grader</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap legal">
+      <p class="eyebrow">Legal</p>
+      <h1>Privacy Policy</h1>
+      <p class="updated">Effective date: 20 September 2026</p>
+
+      <p class="bigger">
+        MarkMyPaper is software you install and run on your own computer.
+        This policy describes what the application stores, what it sends, and
+        what it never sees. The short version is at the end of each section.
+      </p>
+
+      <div class="toc">
+        <strong>Contents</strong><br />
+        <a href="#p1">1. Scope</a> <a href="#p2">2. What the application stores</a>
+        <a href="#p3">3. Files you upload</a> <a href="#p4">4. Network communication</a>
+        <a href="#p5">5. Passwords and tokens</a> <a href="#p6">6. Your control</a>
+        <a href="#p7">7. Children</a> <a href="#p8">8. Changes to this policy</a>
+        <a href="#p9">9. Contact</a>
+      </div>
+
+      <h2 id="p1">1. Scope</h2>
+      <p>
+        This policy assumes the typical setup described in the repository
+        README: the application runs on your machine and serves its pages over
+        localhost or your own network. Anything you do with a modified,
+        recompiled, or redeployed version is outside this policy, and any hosted
+        deployment you create is your own processing environment.
+      </p>
+
+      <h2 id="p2">2. What the application stores</h2>
+      <p>
+        The application keeps two kinds of records in a local SQLite file
+        (instance/users.db):
+      </p>
+      <ul>
+        <li>
+          Registration records: the name, email, password hash, and creation
+          time of each registered account, created only when a person submits
+          the registration form.
+        </li>
+        <li>
+          Grading records: for every completed run, the uploaded file name,
+          page count, extraction method per page, the extracted text, the list
+          of model answers and weights supplied, per-answer similarity and
+          score, and the total score and possible maximum.
+        </li>
+      </ul>
+      <p>
+        The extracted text is kept together with the run so the history page
+        and future updates can show what was graded. It is stored on the same
+        machine that performed the OCR.
+      </p>
+      <p><strong>Short version:</strong> account details and grading transcripts, in one local database file.</p>
+
+      <h2 id="p3">3. Files you upload</h2>
+      <p>
+        A submitted file is read into memory on the server (your machine),
+        transcribed if it contains image pages, and discarded from schedule
+        after the run. The original file bytes are not written to the database.
+        The extracted text derived from the file is kept, as described in the
+        previous section.
+      </p>
+      <p><strong>Short version:</strong> the sheet itself is processed in memory and not saved; its extracted text is saved.</p>
+
+      <h2 id="p4">4. Network communication</h2>
+      <p>
+        On first startup the application downloads the TrOCR model weights from
+        Hugging Face. This is a request from your machine to Hugging Face's
+        servers, and it sends only the ordinary HTTP request for the model
+        files. It does not send your sheets, your text, or your account data.
+        If your network blocks or logs outbound requests, that is your own
+        environment.
+      </p>
+      <p>
+        The application does not contain analytics, advertising, tracking
+        pixels, or third-party script embeds in its pages. The only scripts are
+        the application's own, served from the same machine. Fonts and icons are
+        loaded from Google Fonts and your local stylesheet; if you prefer no
+        network requests at all, self-host the fonts.
+      </p>
+      <p><strong>Short version:</strong> one model download on first run to Hugging Face, and nothing else leaves your machine.</p>
+
+      <h2 id="p5">5. Passwords and tokens</h2>
+      <p>
+        Passwords are stored as salted scrypt hashes computed with werkzeug's
+        current default scheme, not as plain text.
+        After login and registration the server issues a JSON Web Token, which
+        the browser keeps in its local storage and sends back in the
+        Authorization header for protected routes. The token expires after one
+        day. Clearing your browser's local storage logs you out.
+      </p>
+      <p><strong>Short version:</strong> hashed passwords in the database, a 24-hour token in your browser's local storage.</p>
+
+      <h2 id="p6">6. Your control</h2>
+      <p>
+        Because all data lives in instance/users.db on your computer, control is
+        literal: you can inspect the file, back it up, or delete it. Deleting
+        the file erases account records and grading transcripts together. The
+        application has no remote storage from which it could recover them.
+        Verifying and adjusting what the application stores is done by editing
+        the application code you run.
+      </p>
+      <p><strong>Short version:</strong> it is your file, in your hands. Delete it and the data is gone.</p>
+
+      <h2 id="p7">7. Children</h2>
+      <p>
+        The application is intended for teachers and graders. If student names
+        or marks pass through the system, they are processed under the account
+        and responsibility of the institution that runs it, as described in the
+        Terms of Service. The application is not directed at children as users,
+        and accounts are not intended for minors.
+      </p>
+
+      <h2 id="p8">8. Changes to this policy</h2>
+      <p>
+        This policy tracks the behavior of this version of the software. Future
+        versions that change what is stored, sent, or retained will have this
+        document updated in the same repository, with a new effective date at
+        the top. The version-controlled history is the record of every change.
+      </p>
+
+      <h2 id="p9">9. Contact</h2>
+      <p>
+        Questions about this policy should be raised in the repository issue
+        tracker at
+        <a href="https://github.com/DysCreate/MarkMyPaper/issues" target="_blank" rel="noopener">github.com/DysCreate/MarkMyPaper/issues</a>,
+        which is the only point of contact for this project.
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__base">
+      <span>MarkMyPaper · Privacy Policy</span>
+      <a href="terms.html">Terms of Service</a>
+    </div>
+  </footer>
+</body>
+</html>

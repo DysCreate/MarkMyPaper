@@ -1,0 +1,26 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Local data (SQLite database holds password hashes and grading records)
+instance/
+*.db
+*.sqlite3
+
+# Runtime logs
+*.log
+server.log
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
